@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html><head>
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/req.js"></script>
+  <!-- script src="lib/qunit.js"></script -->
+<link rel="stylesheet" href="openjscad.css" type="text/css">
+<link rel="stylesheet" href="run.css" type="text/css">
+
+<title>OpenJsCad demo: Parametric axis coupler</title>
+</head>
+<body>
+	<h1>OpenJsCad test.</h1>
+	<div id="viewer"></div>
+	<script><!--
+	(function() {
+		//list of models to load and render for testing
+		var aModels = [
+			'models/four2three.jscad',
+			// 'models/couplerdemo.jscad',
+			//'models/gearsdemo.jscad',
+			// 'models/grilledemo.jscad',
+			//'models/hookdemo.jscad',
+			//'models/lampshadedemo.jscad',
+			//'models/servodemo.jscad',
+			'models/vector2d.jscad',
+			'models/vector3d.jscad',
+			'models/vertex.jscad',
+			'models/solids.jscad',
+			'models/polygon.jscad',
+			''//dummy
+		];
+
+		var gProcessor = null;
+		function loandAndRender() {
+			var sUrl = aModels.shift();
+			if (sUrl) {
+				$.get(sUrl, function(data){
+					gProcessor.setJsCad(data);
+					if (gProcessor.hasSolid())
+						gProcessor.currentObject.fixTJunctions().toStlBinary();
+
+					if (window.jscoverage_report) {
+					  //jscoverage_report();
+					}
+					//give control to the browser
+					setTimeout(loandAndRender, 100);
+				});
+			}
+		};
+		Req(
+			'lib/lightgl.js',
+			//'lib/csg.js',//splitted
+			'csg/csg.base.js',
+			'csg/options.js',
+			'csg/solids.js',
+			'csg/vector3d.js',
+			'csg/vertex.js',
+			'csg/plane.js',
+			'csg/polygon.js',
+			'csg/polygon-shared.js',
+			'csg/polygon-treenode.js',
+			'csg/tree.js',
+			'csg/node.js',
+			'csg/matrix4x4.js',
+			'csg/vector2d.js',
+			'csg/line2d.js',
+			'csg/line3d.js',
+			'csg/ortho-basis.js',
+			'csg/retesselate-polygons.js',
+			'csg/fuzzy-factory.js',
+			'csg/tags.properties.js',
+			'csg/connector.js',
+			'csg/path2d.js',
+			'csg/cag.base.js',
+			'csg/cag.vertex.side.js',
+			'csg/polygon2d.js',
+			'csg/transformation-methods.js',
+			'lib/openjscad.js',
+
+			//setup
+			function(){
+				// Show all exceptions to the user:
+				OpenJsCad.AlertUserOfUncaughtExceptions();
+
+				gProcessor = new OpenJsCad.Processor(
+									document.getElementById("viewer"));
+				gProcessor.debugging = true;
+				gProcessor.setOpenJsCadPath('..');
+			},
+			//load and render models
+			function() {
+				loandAndRender();
+			}
+		);
+	})();
+	//-->
+	</script>
+</body>
+</html>

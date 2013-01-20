@@ -1,0 +1,53 @@
+// Parse an option from the options object
+// If the option is not present, return the default value
+CSG.parseOption = function(options, optionname, defaultvalue) {
+	var result = defaultvalue;
+	if(options) {
+		if(optionname in options) {
+			result = options[optionname];
+		}
+	}
+	return result;
+};
+
+// Parse an option and force into a CSG.Vector3D. If a scalar is passed it is converted
+// into a vector with equal x,y,z
+CSG.parseOptionAs3DVector = function(options, optionname, defaultvalue) {
+	var result = CSG.parseOption(options, optionname, defaultvalue);
+	result = new CSG.Vector3D(result);
+	return result;
+};
+
+// Parse an option and force into a CSG.Vector2D. If a scalar is passed it is converted
+// into a vector with equal x,y
+CSG.parseOptionAs2DVector = function(options, optionname, defaultvalue) {
+	var result = CSG.parseOption(options, optionname, defaultvalue);
+	result = new CSG.Vector2D(result);
+	return result;
+};
+
+CSG.parseOptionAsFloat = function(options, optionname, defaultvalue) {
+	var result = CSG.parseOption(options, optionname, defaultvalue);
+	if(typeof(result) == "string") {
+		result = Number(result);
+	} else if(typeof(result) != "number") {
+		throw new Error("Parameter " + optionname + " should be a number");
+	}
+	return result;
+};
+
+CSG.parseOptionAsInt = function(options, optionname, defaultvalue) {
+	var result = CSG.parseOption(options, optionname, defaultvalue);
+	return Number(Math.floor(result));
+};
+
+CSG.parseOptionAsBool = function(options, optionname, defaultvalue) {
+	var result = CSG.parseOption(options, optionname, defaultvalue);
+	if(typeof(result) == "string") {
+		if(result == "true") result = true;
+		if(result == "false") result = false;
+		if(result === 0) result = false;
+	}
+	result = !! result;
+	return result;
+};
