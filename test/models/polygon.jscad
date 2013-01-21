@@ -19,7 +19,7 @@ function main () {
 			"pos": {"x": -1,"y": 1,"z": 0}
 		}],
 		"shared": {
-			"color": 0
+			"color": [128,128,128]
 		},
 		"plane": {
 			"normal": {"x": 0,"y": 0,"z": 1},
@@ -39,6 +39,7 @@ function main () {
 	v1.toStlString();
 	v1.toString();
 	v1.projectToOrthoNormalBasis(CSG.OrthoNormalBasis.Z0Plane());
+	v1.shared.getHash();
 
 	//area < 0 line#177
 	obj = {
@@ -111,7 +112,21 @@ function main () {
 		CSG.Polygon.fromObject(obj).checkIfConvex();
 	} catch (e) {}
 
-	return CSG.cube({//some simple
-		radius: 6
-	});
+	//polygon-treenode extra
+	//FIXME: tried to call CSG.PolygonTreeNode.addPolygons
+	//but the following does not work
+	return CSG.cube({radius:6})
+		.subtract(
+			[CSG.cylinder({
+				start: [0,0,-8],
+				end: [0,0, 8],
+				radius: 3,
+				resolution: 6
+			}),CSG.cylinder({
+				start: [0,0,-8],
+				end: [0,0, 8],
+				radius: 3,
+				resolution: 6
+			}).rotateY(90)]
+		);
 }
