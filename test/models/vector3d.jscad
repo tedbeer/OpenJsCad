@@ -31,13 +31,54 @@ function main () {
 		v1.mirroredZ();
 
 		//some test with exceptions
-		try {new CSG.Vector3D([1,2]);} catch (e) {}
-		try {new CSG.Vector3D([1,2,3,4]);} catch (e) {}
-		try {new CSG.Vector3D(new String(''));} catch (e) {}
-		try {new CSG.Vector3D(1, 2, 3, 4, 5);} catch (e) {}
-		try {v2.x = 99;} catch (e) {}
-		try {v2.y = 99;} catch (e) {}
-		try {v2.z = 99;} catch (e) {}
+		try {new CSG.Vector3D([1]);
+			setTimeout(function() {
+				//Array must have exactly 2 or 3 elements
+				throw new Error('CSG.Vector3D: exception #1 is not thrown');
+			}, 1);
+		} catch (e) {}
+
+		try {new CSG.Vector3D([1,2,3,4]);
+			setTimeout(function(){
+				//Array must have exactly 2 or 3 elements
+				throw new Error('CSG.Vector3D: exception #2 is not thrown');
+			}, 1);
+		} catch (e) {}
+
+		try {new CSG.Vector3D(new String(''));
+			setTimeout(function(){
+				//Object must have 'x' & 'y' properties
+				throw new Error('CSG.Vector3D: exception #3 is not thrown');
+			}, 1);
+		} catch (e) {}
+
+		try {new CSG.Vector3D(1, 2, 3, 4, 5);
+			setTimeout(function(){
+				//must be 3 arguments or less
+				throw new Error('CSG.Vector3D: exception #4 is not thrown');
+			}, 1);
+		} catch (e) {}
+
+		try {v2.x = 99;
+			setTimeout(function(){
+				//property x is immutable
+				throw new Error('CSG.Vector3D: exception #5 is not thrown');
+			}, 1);
+		} catch (e) {}
+
+		try {v2.y = 99;
+			setTimeout(function(){
+				//property y is immutable
+				throw new Error('CSG.Vector3D: exception #6 is not thrown');
+			}, 1);
+		} catch (e) {}
+
+		try {v2.z = 99;
+			setTimeout(function(){
+				//property z is immutable
+				throw new Error('CSG.Vector3D: exception #7 is not thrown');
+			}, 1);
+		} catch (e) {}
 
 	return CSG.cube({//some simple
 		radius: 6
