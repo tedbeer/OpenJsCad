@@ -107,7 +107,7 @@ CSG.Node.prototype = {
 			this.back.addPolygonTreeNodes(backnodes);
 		}
 	},
-
+	//never used - code in .addPolygonTreeNodes is commented out
 	getParentPlaneNormals: function(normals, maxdepth) {
 		if(maxdepth > 0) {
 			if(this.parent) {
